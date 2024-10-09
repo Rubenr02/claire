@@ -55,6 +55,19 @@ h1 {
     margin: 0 5px; /* Space between emojis */
 }
 
+/* Responsive Design for iPhone 12 */
+@media (max-width: 390px) {
+    .container {
+        max-width: 90vw; /* Ensure it doesn't exceed viewport width */
+    }
+    h1 {
+        font-size: 1.8em; /* Adjust heading size for smaller screens */
+    }
+    .bouquet img {
+        max-height: 45vh; /* Slightly reduce image height for smaller screens */
+    }
+}
+
 /* Falling Emoji Animation */
 @keyframes rain {
     0% {
