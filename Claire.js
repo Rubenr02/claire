@@ -13,7 +13,10 @@ function createFallingEmoji(emoji) {
     // Randomize the starting position of the emoji
     const randomX = Math.random() * window.innerWidth; 
     emojiElement.style.left = randomX + 'px'; // Set the horizontal position
-    emojiElement.style.animationDuration = (Math.random() * 2 + 1) + 's'; // Set a random duration between 1s and 3s
+
+    // Set a random duration between 3s and 5s for a slower fall
+    emojiElement.style.animationDuration = (Math.random() * 2 + 3) + 's'; 
+
     emojiElement.style.fontSize = (Math.random() * 2 + 1) + 'em'; // Random size for variety
 
     document.body.appendChild(emojiElement); // Append to the body
@@ -23,6 +26,7 @@ function createFallingEmoji(emoji) {
         emojiElement.remove(); // Remove emoji from DOM
     });
 }
+
 
 // Function to update the daily message and image
 function updateContent() {
