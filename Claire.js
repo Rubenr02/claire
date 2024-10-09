@@ -43,7 +43,7 @@ function updateContent() {
         { src: "images/flower10.jpg", message: "You make every day brighter! ☀️" },
         { src: "images/flower11.jpg", message: "A beautiful flower for my beautiful Pookie! 🌸" },
         { src: "images/flower12.jpg", message: "You did change me a lot!!!" },
-        { src: "images/flower13.jpg", message: "Have a lovely day, Pookie! 🥰" 💛},
+        { src: "images/flower13.jpg", message: "Hey cutie! Hope you have a great day 💛"  },
         { src: "images/flower14.jpg", message: "You fill my life with color! 🎨" },
         { src: "images/flower1.jpg", message: "Love is a choice and I choose you! 💕" } // This can repeat or add a new image/message
     ];
