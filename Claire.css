@@ -1,0 +1,94 @@
+body {
+    font-family: 'Comfortaa', sans-serif; /* Use the Inter font */
+    background-color: #fff0f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height of the viewport */
+    margin: 0;
+    padding: 20px; /* Add padding to prevent edge contact */
+    box-sizing: border-box; /* Include padding in height and width calculations */
+}
+
+.container {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Full width */
+    max-width: 500px; /* Limit the maximum width */
+    max-height: 80vh; /* Set a maximum height */
+    overflow: auto; /* Allow scrolling if content exceeds max height */
+    margin: 20px; /* Add margin for spacing */
+    transition: all 0.3s ease-in-out;
+}
+
+h1 {
+    color: #ff69b4;
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+.bouquet img {
+    width: 100%; /* Full width of the container */
+    max-width: 500px; /* Maximum width */
+    max-height: 400px; /* Set a maximum height to fit the container */
+    border-radius: 10px;
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensure the image covers the box without distortion */
+}
+
+.message {
+    margin-top: 20px;
+    font-family: 'Comfortaa', sans-serif; /* Use the Inter font */
+}
+
+.emoji-reactions {
+    margin-top: 10px;
+    display: flex; /* Flexbox for emoji alignment */
+    justify-content: center; /* Center the emojis */
+}
+
+.emoji {
+    font-size: 2em;
+    cursor: pointer;
+    margin: 0 5px; /* Space between emojis */
+}
+
+/* Falling Emoji Animation */
+@keyframes rain {
+    0% {
+        transform: translateY(-100px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+.falling-emoji {
+    position: absolute;
+    pointer-events: none; /* Allow clicking through the emoji */
+    animation: rain forwards; /* Animation duration will be set in JS */
+    opacity: 1; /* Start fully visible */
+}
+
+/* Responsive Design for Larger Screens */
+@media (min-width: 768px) {
+    .container {
+        max-width: 600px; /* Max width for medium screens */
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        max-width: 700px; /* Max width for larger screens */
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 800px; /* Max width for very large screens */
+    }
+}
