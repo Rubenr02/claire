@@ -6,10 +6,6 @@
     <title>Daily Bouquet</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Claire.css">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js"></script>
 </head>
 <body>
     <div class="container">
@@ -31,6 +27,15 @@
             <div id="countdownTimer"></div>
         </div>
     </div>
-    <script src="Claire.js"></script>
+    <script type="module">
+        import { updateContent, countdown, react } from './Claire.js';
+        
+        // Initialize content and countdown
+        updateContent();
+        countdown();
+        
+        // Make react function available globally
+        window.react = react;
+    </script>
 </body>
 </html>

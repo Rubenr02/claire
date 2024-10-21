@@ -11,7 +11,7 @@ const firebaseConfig = {
     messagingSenderId: "434856080342",
     appId: "1:434856080342:web:d150636f1a19ba574c6a77",
     measurementId: "G-G196Q69X66"
-  };
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -19,7 +19,7 @@ const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
 // Function to update the daily message and image
-function updateContent() {  
+export function updateContent() {  
     const content = [
         { src: "images/flower1.jpg", message: "You are my sunshine! 🌞" },
         { src: "images/flower2.jpg", message: "Sweet passionate love blooms here! 🌷" },
@@ -58,7 +58,7 @@ function updateContent() {
 }
 
 // Countdown timer
-function countdown() {
+export function countdown() {
     const countToDate = new Date('October 31, 2024 16:20:00').getTime();
     const countdownElement = document.getElementById('countdownTimer');
     const bouquetImageElement = document.getElementById('bouquetImage');
@@ -86,7 +86,7 @@ function countdown() {
 }
 
 // Emoji reaction
-function react(emoji) {
+export function react(emoji) {
     const numberOfEmojis = 10;
     for (let i = 0; i < numberOfEmojis; i++) {
         createFallingEmoji(emoji);
@@ -121,5 +121,6 @@ async function storeEmojiReaction(emoji) {
     }
 }
 
+// Call functions to initialize content and countdown
 updateContent();
 countdown();
