@@ -1,35 +1,25 @@
-function react(emoji) {
-    const numberOfEmojis = 10; // Number of emojis to fall
-    for (let i = 0; i < numberOfEmojis; i++) {
-        createFallingEmoji(emoji);
-    }
-}
+// Firebase configuration and initialization
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js";
 
-function createFallingEmoji(emoji) {
-    const emojiElement = document.createElement('span');
-    emojiElement.className = 'falling-emoji';
-    emojiElement.textContent = emoji;
+const firebaseConfig = {
+    apiKey: "AIzaSyBeWAuxxlMCVWQeEkgv4WzaxU-qWto_j9U",
+    authDomain: "claire-8acdc.firebaseapp.com",
+    projectId: "claire-8acdc",
+    storageBucket: "claire-8acdc.appspot.com",
+    messagingSenderId: "434856080342",
+    appId: "1:434856080342:web:d150636f1a19ba574c6a77",
+    measurementId: "G-G196Q69X66"
+  };
 
-    // Randomize the starting position of the emoji
-    const randomX = Math.random() * window.innerWidth; 
-    emojiElement.style.left = randomX + 'px'; // Set the horizontal position
-
-    // Set a random duration between 3s and 5s for a slower fall
-    emojiElement.style.animationDuration = (Math.random() * 2 + 3) + 's'; 
-
-    emojiElement.style.fontSize = (Math.random() * 2 + 1) + 'em'; // Random size for variety
-
-    document.body.appendChild(emojiElement); // Append to the body
-
-    // Remove the emoji after the animation ends
-    emojiElement.addEventListener('animationend', () => {
-        emojiElement.remove(); // Remove emoji from DOM
-    });
-}
-
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app);
 
 // Function to update the daily message and image
-function updateContent() {
+function updateContent() {  
     const content = [
         { src: "images/flower1.jpg", message: "You are my sunshine! 🌞" },
         { src: "images/flower2.jpg", message: "Sweet passionate love blooms here! 🌷" },
@@ -43,36 +33,93 @@ function updateContent() {
         { src: "images/flower10.jpg", message: "You make every day brighter! ☀️" },
         { src: "images/flower11.jpg", message: "A beautiful flower for my beautiful Pookie! 🌸" },
         { src: "images/flower12.jpg", message: "You did change me a lot!!!" },
-        { src: "images/flower13.jpg", message: "Have a lovely day, Pookie! 🥰" },
+        { src: "images/flower13.jpg", message: "Can´t wait to give you real ones! 💛" },
         { src: "images/flower14.jpg", message: "You fill my life with color! 🎨" },
-        { src: "images/flower1.jpg", message: "Love is a choice and I choose you! 💕" } // This can repeat or add a new image/message
+        { src: "images/flower1.jpg", message: "Love is a choice and I choose you! 💕" }
     ];
 
-    // Get the current date
     const today = new Date();
-    
-    // Set start date to tomorrow
     today.setDate(today.getDate() + 1);
 
-    // Check if the current time is past 7:00 AM
     const currentHour = today.getHours();
     const currentMinutes = today.getMinutes();
+    let dayIndex;
+
     if (currentHour >= 7) {
-        // If it’s past 7:00 AM, set the index based on today’s date
         const diffTime = Math.abs(today - new Date(today.getFullYear(), today.getMonth(), today.getDate() - (today.getDate() % 14)));
-        const dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 14; // Get the index for 14 days
-        // Update the image and message
-        document.getElementById('bouquetImage').src = content[dayIndex].src;
-        document.getElementById('dailyMessage').textContent = content[dayIndex].message;
+        dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 14;
     } else {
-        // If it’s before 7:00 AM, show the next day's content
         const diffTime = Math.abs(today - new Date(today.getFullYear(), today.getMonth(), today.getDate() - (today.getDate() % 14) - 1));
-        const dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 14; // Get the index for 14 days
-        // Update the image and message
-        document.getElementById('bouquetImage').src = content[dayIndex].src;
-        document.getElementById('dailyMessage').textContent = content[dayIndex].message;
+        dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 14;
+    }
+
+    document.getElementById('bouquetImage').src = content[dayIndex].src;
+    document.getElementById('dailyMessage').textContent = content[dayIndex].message;
+}
+
+// Countdown timer
+function countdown() {
+    const countToDate = new Date('October 31, 2024 16:20:00').getTime();
+    const countdownElement = document.getElementById('countdownTimer');
+    const bouquetImageElement = document.getElementById('bouquetImage');
+    const dailyMessageElement = document.getElementById('dailyMessage');
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const timeDifference = countToDate - now;
+
+        if (timeDifference > 0) {
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        } else {
+            countdownElement.textContent = "I'm with my Pookie now! 💖";
+            bouquetImageElement.src = "images/together.jpg";
+            dailyMessageElement.textContent = "We're together at last! 💞";
+        }
+    }
+
+    setInterval(updateCountdown, 1000);
+}
+
+// Emoji reaction
+function react(emoji) {
+    const numberOfEmojis = 10;
+    for (let i = 0; i < numberOfEmojis; i++) {
+        createFallingEmoji(emoji);
+    }
+    storeEmojiReaction(emoji); // Store emoji reaction in Firebase
+}
+
+function createFallingEmoji(emoji) {
+    const emojiElement = document.createElement('div');
+    emojiElement.classList.add('falling-emoji');
+    emojiElement.textContent = emoji;
+    document.body.appendChild(emojiElement);
+
+    emojiElement.style.left = Math.random() * 100 + 'vw';
+    emojiElement.style.animationDuration = Math.random() * 2 + 3 + 's';
+
+    emojiElement.addEventListener('animationend', () => {
+        emojiElement.remove();
+    });
+}
+
+// Store emoji reaction in Firestore
+async function storeEmojiReaction(emoji) {
+    try {
+        await addDoc(collection(db, 'emojiReactions'), {
+            emoji: emoji,
+            timestamp: serverTimestamp()
+        });
+        console.log('Emoji reaction stored:', emoji);
+    } catch (error) {
+        console.error('Error storing emoji reaction:', error);
     }
 }
 
-// Call updateContent to set initial content
 updateContent();
+countdown();
