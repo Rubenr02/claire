@@ -40,10 +40,8 @@ export function updateContent() {
     ];
 
     const today = new Date();
-    today.setDate(today.getDate() + 1);
-
-    // Condition to update today's picture for the 15th entry
-    const dayIndex = 14;  // Array index starts from 0, so 14 corresponds to the 15th entry
+    // Set today's picture to the 15th entry explicitly
+    const dayIndex = 15;  // Array index starts from 0, so 14 corresponds to the 15th entry
 
     document.getElementById('bouquetImage').src = content[dayIndex].src;
     document.getElementById('dailyMessage').textContent = content[dayIndex].message;
@@ -68,7 +66,7 @@ export function countdown() {
 
             countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
         } else {
-            countdownElement.textContent = "I'm with my Pookie now! 💖";
+            countdownElement.textContent = "I'm with mon chaton now! 💛";
             bouquetImageElement.src = "images/together.jpg";
             dailyMessageElement.textContent = "We're together at last! 💞";
         }
