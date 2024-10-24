@@ -35,7 +35,8 @@ export function updateContent() {
         { src: "images/flower12.jpg", message: "You did change me a lot!!!" },
         { src: "images/flower13.jpg", message: "Can´t wait to give you real ones! 💛" },
         { src: "images/flower14.jpg", message: "You fill my life with color! 🎨" },
-        { src: "images/flower1.jpg", message: "Love is a choice and I choose you! 💕" }
+        { src: "images/flower1.jpg", message: "Love is a choice and I choose you! 💕" },
+        { src: "images/flower1.jpg", message: "Can´t wait to match pjs with you! 👉 👈" }
     ];
 
     const today = new Date();
@@ -47,10 +48,10 @@ export function updateContent() {
 
     if (currentHour >= 7) {
         const diffTime = Math.abs(today - new Date(today.getFullYear(), today.getMonth(), today.getDate() - (today.getDate() % 14)));
-        dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 14;
+        dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 16;
     } else {
         const diffTime = Math.abs(today - new Date(today.getFullYear(), today.getMonth(), today.getDate() - (today.getDate() % 14) - 1));
-        dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 14;
+        dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 16;
     }
 
     document.getElementById('bouquetImage').src = content[dayIndex].src;
