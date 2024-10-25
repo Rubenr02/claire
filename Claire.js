@@ -36,12 +36,14 @@ export function updateContent() {
         { src: "images/flower13.jpg", message: "Can´t wait to give you real ones! 💛" },
         { src: "images/flower14.jpg", message: "You fill my life with color! 🎨" },
         { src: "images/flower1.jpg", message: "Love is a choice and I choose you! 💕" },
-        { src: "images/flower15.jpg", message: "Can´t wait to match pjs with you! 👉 👈" }
+        { src: "images/flower15.jpg", message: "Can´t wait to match pjs with you! 👉 👈" },
+        { src: "images/flower16.jpg", message: "Some days may be good some may be shit! At least I always have my chaton!💛💛💛" }
+
     ];
 
     const today = new Date();
     // Set today's picture to the 15th entry explicitly
-    const dayIndex = 15;  // Array index starts from 0, so 14 corresponds to the 15th entry
+    const dayIndex = 16;  // Array index starts from 0, so 14 corresponds to the 15th entry
 
     document.getElementById('bouquetImage').src = content[dayIndex].src;
     document.getElementById('dailyMessage').textContent = content[dayIndex].message;
