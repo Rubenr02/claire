@@ -13,16 +13,13 @@ const firebaseConfig = {
     measurementId: "G-G196Q69X66"
 };
 
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
-
-
 // Function to update the daily message and image
-export function updateContent() {  
+export function updateContent() {
     const content = [
         { src: "images/flower19.jpg", message: "Je t'aime plus chaque jour! 💗" },
         { src: "images/flower20.jpg", message: "Love you more than words can say! 💞" },
@@ -40,19 +37,9 @@ export function updateContent() {
     ];
 
     const today = new Date();
-    today.setDate(today.getDate() + 1);
-
-    const currentHour = today.getHours();
-    const currentMinutes = today.getMinutes();
-    let dayIndex;
-
-    if (currentHour >= 7) {
-        const diffTime = Math.abs(today - new Date(today.getFullYear(), today.getMonth(), today.getDate() - (today.getDate() % 14)));
-        dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 14;
-    } else {
-        const diffTime = Math.abs(today - new Date(today.getFullYear(), today.getMonth(), today.getDate() - (today.getDate() % 14) - 1));
-        dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % 14;
-    }
+    const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+    const diffTime = Math.abs(today - startDate);
+    const dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % content.length;
 
     document.getElementById('bouquetImage').src = content[dayIndex].src;
     document.getElementById('dailyMessage').textContent = content[dayIndex].message;
@@ -75,7 +62,7 @@ export function countdown() {
             const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-            countdownElement.textContent = ${days}d ${hours}h ${minutes}m ${seconds}s;
+            countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
         } else {
             countdownElement.textContent = "I'm with my Pookie now! 💖";
             bouquetImageElement.src = "images/together.jpg";
