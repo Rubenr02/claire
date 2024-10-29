@@ -13,29 +13,30 @@ const firebaseConfig = {
     measurementId: "G-G196Q69X66"
 };
 
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
+
+
 // Function to update the daily message and image
 export function updateContent() {  
     const content = [
-        { src: "images/flower1.jpg", message: "You are my sunshine! 🌞" },
-        { src: "images/flower2.jpg", message: "Sweet passionate love blooms here! 🌷" },
-        { src: "images/flower3.jpg", message: "Here's a bouquet just for you! 🌹" },
-        { src: "images/flower4.jpg", message: "Have a great day! Drink water girl! 🌼" },
-        { src: "images/flower5.jpg", message: "Just because... I love you! 💖" },
-        { src: "images/flower6.jpg", message: "You're the flower in my garden! 🌻" },
-        { src: "images/flower7.jpg", message: "You're my pink, my blue, and all the other colors! 🌺" },
-        { src: "images/flower8.jpg", message: "You're my favorite snack! 🍭" },
-        { src: "images/flower9.jpg", message: "Just a reminder that I love you more! 💘" },
-        { src: "images/flower10.jpg", message: "You make every day brighter! ☀️" },
-        { src: "images/flower11.jpg", message: "A beautiful flower for my beautiful Pookie! 🌸" },
-        { src: "images/flower12.jpg", message: "You did change me a lot!!!" },
-        { src: "images/flower13.jpg", message: "Can´t wait to give you real ones! 💛" },
-        { src: "images/flower14.jpg", message: "You fill my life with color! 🎨" },
-        { src: "images/flower1.jpg", message: "Love is a choice and I choose you! 💕" }
+        { src: "images/flower19.jpg", message: "Je t'aime plus chaque jour! 💗" },
+        { src: "images/flower20.jpg", message: "Love you more than words can say! 💞" },
+        { src: "images/flower21.jpg", message: "Learning French for you is my favorite new activity. Merci, mon chaton! 🌸" },
+        { src: "images/flower22.jpg", message: "Harry Potter, the Boy Who Lived… come to die.(Pretend it´s me saying it) nheheheh" },
+        { src: "images/flower23.jpg", message: "Stay safe and drink water, love. Have a fantastic day! 💛" },
+        { src: "images/flower24.jpg", message: "Je suis fou de toi!💛" },
+        { src: "images/flower25.jpg", message: "You complete me! ❤️" },
+        { src: "images/flower26.jpg", message: "Je suis tellement chanceux de t'avoir! 🍀" },
+        { src: "images/flower27.jpg", message: "Wishing the sexiest girl a wonderfull day🌸 🌟" },
+        { src: "images/flower28.jpg", message: "Have a magical day my pookie! Don't forget that I'm always here for you. 💞💞" },
+        { src: "images/flower29.jpg", message: "Je t'adore plus que tout! 💕" },
+        { src: "images/flower30.jpg", message: "Hey cuties just want you to konw that your smile lights up my world! 🌟" },
+        { src: "images/flower31.jpg", message: "Merci d'être toi, je t'aime! 💖" }
     ];
 
     const today = new Date();
@@ -74,7 +75,7 @@ export function countdown() {
             const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-            countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            countdownElement.textContent = ${days}d ${hours}h ${minutes}m ${seconds}s;
         } else {
             countdownElement.textContent = "I'm with my Pookie now! 💖";
             bouquetImageElement.src = "images/together.jpg";

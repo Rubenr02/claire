@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="countdown">
-            <h2>Countdown to being with Pookie:</h2>
+            <h2>Countdown to be with Pookie:</h2>
             <div id="countdownTimer"></div>
         </div>
     </div>
@@ -37,5 +37,15 @@
         // Make react function available globally
         window.react = react;
     </script>
+        <script type="module">
+            import { updateContent, countdown, react } from './serverside.js';
+            
+            // Initialize content and countdown
+            updateContent();
+            countdown();
+            
+            // Make react function available globally
+            window.react = react;
+        </script>
 </body>
 </html>
