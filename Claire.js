@@ -47,7 +47,7 @@ export function updateContent() {
 
 // Countdown timer
 export function countdown() {
-    const countToDate = new Date('October 31, 2024 16:20:00').getTime();
+    const countToDate = new Date('November 29, 2024 10:00:00').getTime();
     const countdownElement = document.getElementById('countdownTimer');
     const bouquetImageElement = document.getElementById('bouquetImage');
     const dailyMessageElement = document.getElementById('dailyMessage');
