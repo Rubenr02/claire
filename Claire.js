@@ -21,18 +21,12 @@ const db = getFirestore(app);
 // Function to update the daily message and image
 export function updateContent() {
     const content = [
-        { src: "images/flower19.jpg", message: "Je t'aime plus chaque jour! 💗" },
-        { src: "images/flower20.jpg", message: "Love you more than words can say! 💞" },
-        { src: "images/flower21.jpg", message: "Learning French for you is my favorite new activity. Merci, mon chaton! 🌸" },
-        { src: "images/flower22.jpg", message: "Harry Potter, the Boy Who Lived… come to die.(Pretend it´s me saying it) nheheheh" },
-        { src: "images/flower23.jpg", message: "Stay safe and drink water, love. Have a fantastic day! 💛" },
-        { src: "images/flower24.jpg", message: "Je suis fou de toi!💛" },
         { src: "images/flower25.jpg", message: "You complete me! ❤️" },
         { src: "images/flower26.jpg", message: "Je suis tellement chanceux de t'avoir! 🍀" },
         { src: "images/flower27.jpg", message: "Wishing the sexiest girl a wonderfull day🌸 🌟" },
         { src: "images/flower28.jpg", message: "Have a magical day my pookie! Don't forget that I'm always here for you. 💞💞" },
         { src: "images/flower29.jpg", message: "Je t'adore plus que tout! 💕" },
-        { src: "images/flower30.jpg", message: "Hey cuties just want you to konw that your smile lights up my world! 🌟" },
+        { src: "images/flower30.jpg", message: "Hey cutie just want you to konw that your smile lights up my world! 🌟" },
         { src: "images/flower31.jpg", message: "Merci d'être toi, je t'aime! 💖" }
     ];
 
