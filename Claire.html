@@ -8,12 +8,98 @@
     <link rel="stylesheet" href="Claire.css">
 </head>
 <body>
+    <!-- Egg elements with yolk and hidden emoji face -->
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+    <div class="egg">
+        <div class="yellow-yolk">
+            <span class="emoji-face">˃ ᵕ <</span>
+        </div>
+    </div>
+
+
     <div class="container">
         <h1>Daily Flowers for Pookie</h1>
-        <div class="bouquet">
+
+        <!-- Bouquet Section -->
+        <div class="close-container">
+            <button id="closeButton" style="display: none;"></button>
+        </div>
+        <div class="bouquet" id="bouquetContainer" style="display:none;">
             <img id="bouquetImage" src="" alt="Flower Bouquet">
         </div>
-        <div class="message">
+
+        <!-- Message Section -->
+        <div class="message" id="messageContainer" style="display:none;">
+            <!-- Close Button Inside the Pop-up -->
             <p id="dailyMessage"></p>
             <div class="emoji-reactions">
                 <span class="emoji" onclick="react('😍')">😍</span>
@@ -22,30 +108,39 @@
                 <span class="emoji" onclick="react('🌸')">🌸</span>
             </div>
         </div>
-        <div class="countdown">
+
+        <!-- Countdown Section -->
+        <div class="countdown" id="countdownContainer" style="display:none;">
             <h2>Countdown to be with Pookie:</h2>
             <div id="countdownTimer"></div>
         </div>
+
+        <!-- Calendar Section -->
+        <div id="calendarContainer">
+            <div id="calendarGrid"></div>
+        </div>
+
+        <!-- Meme GIF Section -->
+        <div id="memeGif" style="display:none;">
+            <img src="images/no-no-cat.gif" alt="No meme" />
+            <div class="silly">
+                <h3>Not yet you silly!</h3>
+            </div>
+        </div>
+
+
     </div>
+
     <script type="module">
-        import { updateContent, countdown, react } from './Claire.js';
+        import { updateContent, countdown, adventCalendar, react } from './Claire.js';
         
-        // Initialize content and countdown
+        // Initialize content and calendar
+        adventCalendar();
         updateContent();
         countdown();
-        
+
         // Make react function available globally
         window.react = react;
     </script>
-        <script type="module">
-            import { updateContent, countdown, react } from './serverside.js';
-            
-            // Initialize content and countdown
-            updateContent();
-            countdown();
-            
-            // Make react function available globally
-            window.react = react;
-        </script>
 </body>
 </html>

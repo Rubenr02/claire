@@ -1,6 +1,7 @@
+/* General Styles */
 body {
     font-family: 'Comfortaa', sans-serif;
-    background-color: #fff0f5;
+    background: linear-gradient(45deg, #fff0f5, #ffefd5); /* Soft pastel pink and yellowish gradient */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,80 +9,589 @@ body {
     margin: 0;
     padding: 20px;
     box-sizing: border-box;
+    position: relative;
+    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: hidden; /* Disables horizontal scrolling */
 }
 
+/* Hides the scrollbar for WebKit browsers */
+body::-webkit-scrollbar {
+    display: none; /* Hides the scrollbar */
+}
+
+/* Ensure viewport scaling works well on mobile devices */
+html {
+    -webkit-text-size-adjust: 100%; /* Prevent font size adjustments on mobile */
+}
+
+meta[name="viewport"] {
+    content: "width=device-width, initial-scale=1.0"; /* Enable responsive design */
+}
+
+/* Container Styles */
 .container {
+    position: relative;
     text-align: center;
     background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Larger shadow for floating effect */
     width: 100%;
     max-width: 500px;
-    max-height: 80vh;
-    overflow: auto;
+    max-height: 120vh;
+    overflow: hidden; /* Ensure the eggs stay within the container */
     margin: 20px;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.4s ease-in-out;
+    background: linear-gradient(135deg, #fff0f5, #ffefd5); /* Soft pastel pink and yellowish gradient */
 }
 
+/* Initially hide the emoji face */
+.emoji-face {
+    font-size: 1em; /* Smaller font size to fit within the yolk */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none; /* Hide the emoji by default */
+    white-space: nowrap; /* Prevents the emoji from breaking into multiple lines */
+    z-index: 1; /* Makes sure the emoji stays on top */
+}
+
+/* Add a smoother transition for the emoji's appearance */
+.emoji-face.show {
+    display: inline-block; /* Show the emoji */
+    animation: emojiAppear 0.5s ease-in-out;
+}
+
+@keyframes emojiAppear {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Egg and Yolk Styles */
+.egg {
+    position: absolute;
+    background: #ffffff;
+    opacity: 0.8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fall 100s ease-in-out infinite;
+    clip-path: ellipse(50% 40% at 50% 50%);
+    border-radius: 50%;
+}
+
+.yellow-yolk {
+    width: 35px;
+    height: 35px;
+    background-color: #ffcc00; /* Yellow yolk color */
+    border-radius: 50%;
+    position: absolute;
+}
+
+/* Keyframe for falling animation */
+@keyframes fall {
+    0% {
+        top: var(--top-start);
+        left: var(--left-start);
+    }
+    100% {
+        top: 100vh; /* Move eggs out of the screen */
+        left: var(--left-end);
+    }
+}
+
+/* Randomizing Initial Positions for Each Egg */
+.egg:nth-child(1) {
+    width: 90px;
+    height: 90px;
+    --top-start: 5%;
+    --left-start: 10%;
+    --left-end: 0%;
+}
+
+.egg:nth-child(2) {
+    width: 110px;
+    height: 110px;
+    --top-start: 15%;
+    --left-start: 90%;
+    --left-end: 20%;
+}
+
+.egg:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    --top-start: 25%;
+    --left-start: 0%;
+    --left-end: 30%;
+}
+
+.egg:nth-child(4) {
+    width: 95px;
+    height: 95px;
+    --top-start: 65%;
+    --left-start: 6%;
+    --left-end: 40%;
+}
+
+.egg:nth-child(5) {
+    width: 110px;
+    height: 110px;
+    --top-start: 45%;
+    --left-start: 10%;
+    --left-end: 50%;
+}
+
+.egg:nth-child(6) {
+    width: 85px;
+    height: 85px;
+    --top-start: 55%;
+    --left-start: 60%;
+    --left-end: 60%;
+}
+
+.egg:nth-child(7) {
+    width: 120px;
+    height: 120px;
+    --top-start: 35%;
+    --left-start: 86%;
+    --left-end: 0%;
+}
+
+.egg:nth-child(8) {
+    width: 90px;
+    height: 90px;
+    --top-start: 15%;
+    --left-start: 80%;
+    --left-end: 80%;
+}
+
+.egg:nth-child(9) {
+    width: 100px;
+    height: 100px;
+    --top-start: 5%;
+    --left-start: 90%;
+    --left-end: 90%;
+}
+
+.egg:nth-child(10) {
+    width: 95px;
+    height: 95px;
+    --top-start: 25%;
+    --left-start: 100%;
+    --left-end: 100%;
+}
+
+/* Glow Effect */
+.egg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    animation: glow 5s ease-in-out infinite;
+}
+
+/* Glow Effect Keyframe */
+@keyframes glow {
+    0% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0.4;
+    }
+}
+
+/* Prevent eggs from going behind the container and smooth movement */
+@keyframes smoothMovement {
+    0% {
+        top: var(--top-start);
+        left: var(--left-start);
+    }
+    100% {
+        top: 100vh;
+        left: var(--left-end);
+    }
+}
+
+/* Apply smooth movement to all eggs */
+.egg {
+    animation: fall 100s linear infinite;
+}
+
+/* Animation for the container to smoothly appear */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Heading Styling */
 h1 {
-    color: #ff69b4;
+    color: #ff69b4; /* Pastel pink */
+    font-size: 2.2em;
     margin-bottom: 20px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Light shadow for text */
 }
 
+/* Bouquet Image Styling */
 .bouquet img {
     width: 100%;
     max-width: 500px;
     max-height: 400px;
-    border-radius: 10px;
+    border-radius: 15px;
     height: auto;
     object-fit: cover;
 }
 
-.message {
-    margin-top: 20px;
+/* Close button styling */
+#closeButton {
+    background-color: transparent;
+    color: #646060;
+    border: none;
+    font-size: 1.7em;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 0;
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+#closeButton:hover {
+    background-color: rgba(255, 76, 76, 0.2); /* Lighter red background */
+    transform: scale(1.2); /* Grow the close button on hover */
+}
+
+#closeButton::before {
+    content: "×";
+    font-size: 1.7em;
+    font-weight: bold;
+    color: #ff69b4; /* Cute pink color for the 'X' */
+}
+
+
+/* Emoji Reactions */
 .emoji-reactions {
     margin-top: 10px;
     display: flex;
     justify-content: center;
+    transition: all 0.3s ease;
 }
 
 .emoji {
-    font-size: 2em;
+    font-size: 2.5em;
     cursor: pointer;
     margin: 0 5px;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
+.emoji:hover {
+    transform: scale(1.3); /* Increase emoji size on hover */
+    color: #ff69b4;
+}
+
+/* Countdown Styling */
 .countdown {
-    margin-top: 20px;
+    margin-top: 30px;
     font-family: 'Comfortaa', sans-serif;
+    color: #ff69b4;
+    font-size: 1.4em;
+}
+
+
+h3 {
+    color: #ff69b4; /* Pastel pink */
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Light shadow for text */
+}
+
+/* Calendar Styling */
+.calendar {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20px;
+    background: #fff0f5; /* Light pink background */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+.calendar table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar th {
+    color: #ff69b4;
+    font-weight: bold;
+    padding: 10px 0;
+    text-transform: uppercase;
+}
+
+.calendar td {
+    padding: 10px;
+    text-align: center;
+    color: #555;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* Highlight current day */
+.calendar .today {
+    background: #ff69b4; /* Pink background */
+    color: white;
+    border-radius: 50%; /* Make it a circle */
+}
+
+/* Smooth highlight transition */
+.calendar td:hover {
+    background: #ff69b4; /* Pink background on hover */
+    color: white;
+    border-radius: 50%;
+    transform: scale(1.1); /* Scale up slightly on hover */
+}
+
+/* Navigation buttons */
+.calendar .nav-button {
+    background: #ff69b4; /* Pink background */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin: 5px;
+}
+
+.calendar .nav-button:hover {
+    background: #ff1493; /* Darker pink */
+}
+
+/* Ensure overflow is handled on smaller screens */
+.calendar-wrapper {
+    overflow-x: auto;
 }
 
 #countdownTimer {
-    font-size: 1.5em;
+    font-size: 2em;
     color: #ff69b4;
-    margin-top: 10px;
+    font-weight: bold;
+    text-shadow: 0px 0px 8px rgba(255, 105, 180, 0.7); /* Glowing effect */
 }
 
-/* Responsive Design for iPhone 12 */
-@media (max-width: 390px) {
-    .container {
-        max-width: 90vw;
+/* Calendar Grid */
+#calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* Default for larger screens */
+    grid-gap: 12px;
+    margin-bottom: 20px;
+    padding: 10px;
+    justify-items: center;
+    align-items: center;
+}
+
+/* Day Cells Styling */
+#calendarGrid div {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ffe0eb, #ffb3d9); /* Soft gradient */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    color: #ff69b4;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Calendar Grid Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+    #calendarGrid {
+        grid-template-columns: repeat(5, 1fr); /* Use 5 columns on smaller screens */
     }
+
+    #calendarGrid div {
+        width: 45px;
+        height: 45px;
+        font-size: 1.0em;
+    }
+}
+
+@media (max-width: 480px) {
+    #calendarGrid {
+        grid-template-columns: repeat(4, 1fr); /* Use 4 columns for smaller devices */
+    }
+
+    #calendarGrid div {
+        width: 40px;
+        height: 40px;
+        font-size: 1.0em;
+    }
+}
+
+@media (max-width: 390px) {
+    /* Adjust for very small screens like iPhone 12 */
+    #calendarGrid {
+        grid-template-columns: repeat(3, 1fr); /* Use 3 columns for even smaller screens */
+    }
+
+    #calendarGrid div {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9em;
+    }
+}
+
+/* Empty Cell Styling (for calendar alignment) */
+#calendarGrid .empty {
+    background-color: transparent;
+}
+
+/* Day Name Styling (Sun, Mon, Tue, etc.) */
+.header {
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 1.1em;
+    color: #ff80b5;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+}
+
+
+/* Media Queries for Small Screens */
+@media (max-width: 390px) {
+    /* For iPhone 12 screen size */
+    body {
+        padding: 0;
+    }
+
+    .container {
+        max-width: 100%;
+        margin: 0 10px;
+        padding: 20px;
+    }
+
     h1 {
         font-size: 1.8em;
     }
+
     .bouquet img {
         max-height: 35vh;
     }
+
     .countdown h2 {
         font-size: 1.2em;
     }
+
     #countdownTimer {
         font-size: 1.2em;
     }
+
+    #calendarGrid {
+        grid-template-columns: repeat(4, 1fr); /* Adjust for smaller screens */
+        grid-gap: 8px;
+    }
+
+    #calendarGrid div {
+        width: 40px;
+        height: 40px;
+        font-size: 1.0em;
+    }
+
+    /* Egg size adjustments for smaller screens */
+    .egg {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .yellow-yolk {
+        width: 20px !important;
+        height: 20px !important;
+    }
+}
+
+/* Responsive Design for Larger Screens */
+@media (min-width: 768px) {
+    .container {
+        max-width: 600px;
+    }
+
+    .egg {
+        width: 80px;
+        height: 80px;
+    }
+
+    .yellow-yolk {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        max-width: 700px;
+    }
+
+    .egg {
+        width: 90px;
+        height: 90px;
+    }
+
+    .yellow-yolk {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 800px;
+    }
+
+    .egg {
+        width: 100px;
+        height: 100px;
+    }
+
+    .yellow-yolk {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+
+/* Meme GIF Styling */
+#memeGif img {
+    max-width: 300%;
+    max-height: 200vh;
+    width: auto;
+    height: auto;
 }
 
 /* Falling Emoji Animation */
@@ -101,23 +611,4 @@ h1 {
     pointer-events: none;
     animation: rain forwards;
     opacity: 1;
-}
-
-/* Responsive Design for Larger Screens */
-@media (min-width: 768px) {
-    .container {
-        max-width: 600px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .container {
-        max-width: 700px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .container {
-        max-width: 800px;
-    }
 }
