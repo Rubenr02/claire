@@ -21,6 +21,7 @@ const db = getFirestore(app);
 // Function to update the daily message and image
 export function updateContent() {
     const content = [
+<<<<<<< HEAD
         { src: "images/flower8.jpg", message: "New update! Love you pookie ☀️" },
         { src: "images/flower9.jpg", message: "Every day with you is a blessing! 💕" },
         { src: "images/flower10.jpg", message: "Sending you all my love today and always! 💖" },
@@ -45,6 +46,15 @@ export function updateContent() {
         { src: "images/flower29.jpg", message: "I'm thankful for you every single day! 🍀" },
         { src: "images/flower30.jpg", message: "You're the reason my heart beats with joy! ❤️" },
         { src: "images/flower31.jpg", message: "Happy New Year, my love! 🎉 Wishing us all the happiness and love in the world in 2025! 🥂" }
+=======
+        { src: "images/flower25.jpg", message: "You complete me! ❤️" },
+        { src: "images/flower26.jpg", message: "Je suis tellement chanceux de t'avoir! 🍀" },
+        { src: "images/flower27.jpg", message: "Wishing the sexiest girl a wonderfull day🌸 🌟" },
+        { src: "images/flower28.jpg", message: "Have a magical day my pookie! Don't forget that I'm always here for you. 💞💞" },
+        { src: "images/flower29.jpg", message: "Je t'adore plus que tout! 💕" },
+        { src: "images/flower30.jpg", message: "Hey cutie just want you to konw that your smile lights up my world! 🌟" },
+        { src: "images/flower31.jpg", message: "Merci d'être toi, je t'aime! 💖" }
+>>>>>>> 70681302593735a8f6efe4d492f00c30714f72dd
     ];
 
     const today = new Date();
