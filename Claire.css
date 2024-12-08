@@ -184,8 +184,8 @@ meta[name="viewport"] {
     width: 95px;
     height: 95px;
     --top-start: 25%;
-    --left-start: 100%;
-    --left-end: 100%;
+    --left-start: 68%;
+    --left-end: 86%;
 }
 
 /* Glow Effect */
@@ -291,6 +291,22 @@ h1 {
     color: #ff69b4; /* Cute pink color for the 'X' */
 }
 
+/* Close button styling */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    background-color: rgba(255, 76, 76, 0.2); /* Lighter red background */
+    transform: scale(1.2); /* Grow the close button on hover */
+}
 
 /* Emoji Reactions */
 .emoji-reactions {
@@ -328,17 +344,48 @@ h3 {
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Light shadow for text */
 }
 
+/* Adding smooth fade-in animation when the calendar loads */
+@keyframes fadeInCalendar {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Apply animation to calendar wrapper */
+.calendar-wrapper {
+    animation: fadeInCalendar 1s ease-out;
+}
+
 /* Calendar Styling */
 .calendar {
     width: 100%;
     max-width: 400px;
     margin-top: 20px;
     background: #fff0f5; /* Light pink background */
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 15px;
+    border-radius: 15px; /* Rounded corners for a soft look */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Subtle but elegant shadow */
+    padding: 20px;
+    animation: fadeIn 1s ease-out; /* Smooth fade-in for calendar */
 }
 
+/* Fade-In Animation for Calendar */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Table Styling for Calendar */
 .calendar table {
     width: 100%;
     border-collapse: collapse;
@@ -347,63 +394,77 @@ h3 {
 .calendar th {
     color: #ff69b4;
     font-weight: bold;
-    padding: 10px 0;
+    padding: 12px 0;
     text-transform: uppercase;
+    font-size: 1.15em;
+    text-align: center;
+    letter-spacing: 1px;
 }
 
+/* Calendar Day Cells Styling */
 .calendar td {
-    padding: 10px;
+    padding: 15px;
     text-align: center;
     color: #555;
-    font-weight: bold;
+    font-weight: 500;
     cursor: pointer;
-    transition: background 0.3s, color 0.3s;
+    border-radius: 12px;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
 
-/* Highlight current day */
+/* Highlight current day with a soft glow effect */
 .calendar .today {
     background: #ff69b4; /* Pink background */
     color: white;
     border-radius: 50%; /* Make it a circle */
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.8); /* Glowing effect */
 }
 
-/* Smooth highlight transition */
+/* Hover effects for calendar cells */
 .calendar td:hover {
-    background: #ff69b4; /* Pink background on hover */
+    background: #ff1493; /* Darker pink background */
     color: white;
-    border-radius: 50%;
-    transform: scale(1.1); /* Scale up slightly on hover */
+    transform: scale(1.1); /* Slight but elegant grow effect on hover */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2); /* Elevated shadow on hover */
 }
 
-/* Navigation buttons */
+/* Smooth hover effect for calendar navigation buttons */
 .calendar .nav-button {
     background: #ff69b4; /* Pink background */
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 25px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s;
-    margin: 5px;
+    transition: background 0.3s, transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 8px;
 }
 
 .calendar .nav-button:hover {
     background: #ff1493; /* Darker pink */
+    transform: scale(1.1); /* Slight grow effect on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Smooth, elegant shadow */
 }
 
-/* Ensure overflow is handled on smaller screens */
-.calendar-wrapper {
-    overflow-x: auto;
+/* Animation for calendar cells */
+@keyframes fadeInCells {
+    0% {
+        opacity: 0;
+        transform: scale(0.85) rotateX(15deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotateX(0deg);
+    }
 }
 
-#countdownTimer {
-    font-size: 2em;
-    color: #ff69b4;
-    font-weight: bold;
-    text-shadow: 0px 0px 8px rgba(255, 105, 180, 0.7); /* Glowing effect */
+/* Applying the fade-in animation to calendar day cells */
+#calendarGrid div {
+    animation: fadeInCells 0.6s ease-out;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Calendar Grid */
+/* Calendar Grid Layout */
 #calendarGrid {
     display: grid;
     grid-template-columns: repeat(7, 1fr); /* Default for larger screens */
@@ -414,59 +475,81 @@ h3 {
     align-items: center;
 }
 
-/* Day Cells Styling */
+/* Day Cells in Calendar */
 #calendarGrid div {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     background: linear-gradient(135deg, #ffe0eb, #ffb3d9); /* Soft gradient */
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.2em;
+    font-size: 1.3em;
     color: #ff69b4;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Calendar Grid Adjustments for Smaller Screens */
+/* Hover effect on calendar grid day cells */
+#calendarGrid div:hover {
+    background: #ff69b4; /* Pink background */
+    color: white;
+    transform: scale(1.1); /* Elegant grow effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Smooth shadow */
+}
+
+/* Countdown Timer Styling */
+#countdownTimer {
+    font-size: 2.2em;
+    color: #ff69b4;
+    font-weight: bold;
+    text-shadow: 0px 0px 12px rgba(255, 105, 180, 0.8); /* Strong glowing effect */
+}
+
+/* Ensure overflow is handled on smaller screens */
+.calendar-wrapper {
+    overflow-x: auto;
+}
+
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
     #calendarGrid {
-        grid-template-columns: repeat(5, 1fr); /* Use 5 columns on smaller screens */
+        grid-template-columns: repeat(5, 1fr); /* Use 5 columns for medium screens */
     }
 
     #calendarGrid div {
-        width: 45px;
-        height: 45px;
-        font-size: 1.0em;
+        width: 50px;
+        height: 50px;
+        font-size: 1.1em;
     }
 }
 
 @media (max-width: 480px) {
     #calendarGrid {
-        grid-template-columns: repeat(4, 1fr); /* Use 4 columns for smaller devices */
+        grid-template-columns: repeat(4, 1fr); /* Use 4 columns for smaller screens */
+    }
+
+    #calendarGrid div {
+        width: 45px;
+        height: 45px;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 390px) {
+    #calendarGrid {
+        grid-template-columns: repeat(3, 1fr); /* Use 3 columns for very small screens */
     }
 
     #calendarGrid div {
         width: 40px;
         height: 40px;
-        font-size: 1.0em;
-    }
-}
-
-@media (max-width: 390px) {
-    /* Adjust for very small screens like iPhone 12 */
-    #calendarGrid {
-        grid-template-columns: repeat(3, 1fr); /* Use 3 columns for even smaller screens */
-    }
-
-    #calendarGrid div {
-        width: 35px;
-        height: 35px;
         font-size: 0.9em;
     }
 }
+
+
 
 /* Empty Cell Styling (for calendar alignment) */
 #calendarGrid .empty {
