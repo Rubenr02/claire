@@ -156,7 +156,7 @@ function displayBouquet(day) {
     document.getElementById('memeGif').style.display = 'none';
 
     const content = [
-        { src: "images/flower8.jpg", message: "You’re the best part of my day! ☀️" },
+        { src: "images/flower8.jpg", message: "New update! Love you pookie ☀️" },
         { src: "images/flower9.jpg", message: "Every day with you is a blessing! 💕" },
         { src: "images/flower10.jpg", message: "Sending you all my love today and always! 💖" },
         { src: "images/flower11.jpg", message: "You're my reason to smile every day! 😁" },
@@ -233,6 +233,8 @@ export function react(emoji) {
     storeEmojiReaction(emoji);
 }
 
+
+
 // Falling emoji creation function
 function createFallingEmoji(emoji) {
     const emojiElement = document.createElement('div');
@@ -260,6 +262,8 @@ async function storeEmojiReaction(emoji) {
         console.error('Error storing emoji reaction:', error);
     }
 }
+
+
 
 // Select all egg elements
 const eggs = document.querySelectorAll('.egg');
