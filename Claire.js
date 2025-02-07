@@ -67,7 +67,7 @@ export function updateContent() {
 
 // Countdown timer to show the countdown until a specific event (e.g., when you are together)
 export function countdown() {
-    const countToDate = new Date('December 29, 2024 10:00:00').getTime();
+    const countToDate = new Date('March 20, 2025 10:00:00').getTime();
     const countdownElement = document.getElementById('countdownTimer');
     const bouquetImageElement = document.getElementById('bouquetImage');
     const dailyMessageElement = document.getElementById('dailyMessage');
@@ -95,28 +95,21 @@ export function countdown() {
 
 export function adventCalendar() {
     const currentDate = new Date();
-    const daysInMonth = 31; // You can adjust this to the current month dynamically
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate(); // Get actual days in the current month
     const calendarGrid = document.getElementById('calendarGrid');
-    
+
     // Clear the grid before adding days
     calendarGrid.innerHTML = '';
 
-    // Add day names (Weekdays) as headers
-    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    dayNames.forEach(dayName => {
-        const dayHeader = document.createElement('div');
-        dayHeader.textContent = dayName;
-        dayHeader.classList.add('header'); // Optional class for styling headers
-        calendarGrid.appendChild(dayHeader);
-    });
-
     // Calculate the first day of the month (for correct alignment)
-    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
+    const firstDayOfMonth = new Date(year, month, 1).getDay();
 
     // Empty spaces before the 1st day of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
         const emptyCell = document.createElement('div');
-        emptyCell.classList.add('empty');  // Class for empty spaces
+        emptyCell.classList.add('empty'); // Class for empty spaces
         calendarGrid.appendChild(emptyCell);
     }
 
@@ -124,9 +117,9 @@ export function adventCalendar() {
     for (let i = 1; i <= daysInMonth; i++) {
         const dayDiv = document.createElement('div');
         dayDiv.textContent = i;
-        dayDiv.classList.add('day');  // Add class for styling
+        dayDiv.classList.add('day'); // Add class for styling
 
-        // Highlight current day
+        // Highlight the current day
         if (i === currentDate.getDate()) {
             dayDiv.classList.add('selected');
         }
@@ -134,9 +127,9 @@ export function adventCalendar() {
         // Add click event to display bouquet and message or meme
         dayDiv.addEventListener('click', () => {
             if (i === currentDate.getDate()) {
-                displayBouquet(i);  // Show bouquet and message if current day
+                displayBouquet(i); // Show bouquet and message if it's the current day
             } else {
-                showMeme(i);  // Show meme if non-current day
+                showMeme(i); // Show meme if the wrong day is clicked
             }
         });
 
@@ -144,83 +137,69 @@ export function adventCalendar() {
     }
 }
 
-// Display bouquet content when a day is clicked
+// Display bouquet content when the correct day is clicked
 function displayBouquet(day) {
-    // Hide the calendar and other sections
     document.getElementById('calendarContainer').style.display = 'none';
-    
-    // Show bouquet content
     document.getElementById('bouquetContainer').style.display = 'block';
     document.getElementById('messageContainer').style.display = 'block';
     document.getElementById('countdownContainer').style.display = 'block';
     document.getElementById('memeGif').style.display = 'none';
 
     const content = [
-        { src: "images/flower8.jpg", message: "New update! Love you pookie ☀️" },
-        { src: "images/flower9.jpg", message: "Every day with you is a blessing! 💕" },
-        { src: "images/flower10.jpg", message: "Sending you all my love today and always! 💖" },
-        { src: "images/flower11.jpg", message: "You're my reason to smile every day! 😁" },
-        { src: "images/flower12.jpg", message: "My heart is yours, today and always! 💕" },
-        { src: "images/flower13.jpg", message: "You're the most beautiful thing that ever happened to me! 💖" },
-        { src: "images/flower14.jpg", message: "Every moment with you is my favorite! 🥰" },
-        { src: "images/flower15.jpg", message: "It's my birthday today! You're the best gift I could wish for!! 🎉" },
-        { src: "images/flower16.jpg", message: "You’re the sweetest person I know! 🍬" },
-        { src: "images/flower17.jpg", message: "Your love makes every day brighter! 🌟" },
-        { src: "images/flower18.jpg", message: "I’m so lucky to have you in my life! 🍀" },
-        { src: "images/flower19.jpg", message: "I love waking up knowing you're part of my life! 🌸" },
-        { src: "images/flower20.jpg", message: "You're always in my thoughts, and forever in my heart! ❤️" },
-        { src: "images/flower21.jpg", message: "You make every day feel special! 💖" },
-        { src: "images/flower22.jpg", message: "I'm so proud of everything you are! 🌸" },
-        { src: "images/flower23.jpg", message: "The world is a better place with you in it! 🌍" },
-        { src: "images/flower24.jpg", message: "You're the reason for my happiness today and every day! 😊" },
-        { src: "images/flower25.jpg", message: "Merry Christmas, mon coeur! 🎄❤️" },
-        { src: "images/flower26.jpg", message: "I can't wait to spend more time with you, mon chaton! 💞" },
-        { src: "images/flower27.jpg", message: "You are my favorite person in the world! 🌏❤️" },
-        { src: "images/flower28.jpg", message: "Every day with you feels like a new adventure! 🌟" },
-        { src: "images/flower29.jpg", message: "I'm thankful for you every single day! 🍀" },
-        { src: "images/flower30.jpg", message: "You're the reason my heart beats with joy! ❤️" },
-        { src: "images/flower31.jpg", message: "Happy New Year, my love! 🎉 Wishing us all the happiness and love in the world in 2025! 🥂" }
-
+        { src: "images/flower1.jpg", message: "New update! Love you pookie ☀️" },
+        { src: "images/flower2.jpg", message: "Every day with you is a blessing! 💕" },
+        { src: "images/flower3.jpg", message: "Sending you all my love today and always! 💖" },
+        { src: "images/flower4.jpg", message: "You're my reason to smile every day! 😁" },
+        { src: "images/flower5.jpg", message: "My heart is yours, today and always! 💕" },
+        { src: "images/flower6.jpg", message: "You're the most beautiful thing that ever happened to me! 💖" },
+        { src: "images/flower7.jpg", message: "Every moment with you is my favorite! 🥰" },
+        { src: "images/flower8.jpg", message: "It's my birthday today! You're the best gift I could wish for!! 🎉" },
+        { src: "images/flower9.jpg", message: "You’re the sweetest person I know! 🍬" },
+        { src: "images/flower10.jpg", message: "Your love makes every day brighter! 🌟" },
+        { src: "images/flower11.jpg", message: "I’m so lucky to have you in my life! 🍀" },
+        { src: "images/flower12.jpg", message: "I love waking up knowing you're part of my life! 🌸" },
+        { src: "images/flower13.jpg", message: "You're always in my thoughts, and forever in my heart! ❤️" },
+        { src: "images/flower14.jpg", message: "You make every day feel special! 💖" },
+        { src: "images/flower15.jpg", message: "I'm so proud of everything you are! 🌸" },
+        { src: "images/flower16.jpg", message: "The world is a better place with you in it! 🌍" },
+        { src: "images/flower17.jpg", message: "You're the reason for my happiness today and every day! 😊" },
+        { src: "images/flower18.jpg", message: "Merry Christmas, mon coeur! 🎄❤️" },
+        { src: "images/flower19.jpg", message: "I can't wait to spend more time with you, mon chaton! 💞" },
+        { src: "images/flower20.jpg", message: "You are my favorite person in the world! 🌏❤️" },
+        { src: "images/flower21.jpg", message: "Every day with you feels like a new adventure! 🌟" },
+        { src: "images/flower22.jpg", message: "I'm thankful for you every single day! 🍀" },
+        { src: "images/flower23.jpg", message: "You're the reason my heart beats with joy! ❤️" },
+        { src: "images/flower24.jpg", message: "Happy New Year, my love! 🎉 Wishing us all the happiness and love in the world in 2025! 🥂" }
     ];
 
-    // Get the content based on the current day
-    const today = new Date();
-    const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
-    const diffTime = Math.abs(today - startDate);
-    const dayIndex = Math.floor(diffTime / (1000 * 60 * 60 * 24)) % content.length;
-
+    // Ensure we stay within the bounds of available content
+    const dayIndex = Math.min(day - 1, content.length - 1);
     document.getElementById('bouquetImage').src = content[dayIndex].src;
     document.getElementById('dailyMessage').textContent = content[dayIndex].message;
 
     // Add close button functionality
     const closeButton = document.getElementById('closeButton');
-    closeButton.style.display = 'block';  // Show the close button
+    closeButton.style.display = 'block';
 
     closeButton.addEventListener('click', () => {
-        // Hide the bouquet and message container when close button is clicked
-        document.getElementById('calendarContainer').style.display = 'block';  // Show the calendar again
-        document.getElementById('bouquetContainer').style.display = 'none';  // Hide the bouquet container
-        document.getElementById('messageContainer').style.display = 'none';  // Hide the message container
-        document.getElementById('countdownContainer').style.display = 'none';  // Hide the countdown container
-        document.getElementById('memeGif').style.display = 'none';  // Hide the meme section if visible
-        
-        // Reset the close button
-        closeButton.style.display = 'none';  // Hide the close button after clicking
+        document.getElementById('calendarContainer').style.display = 'block';
+        document.getElementById('bouquetContainer').style.display = 'none';
+        document.getElementById('messageContainer').style.display = 'none';
+        document.getElementById('countdownContainer').style.display = 'none';
+        document.getElementById('memeGif').style.display = 'none';
+        closeButton.style.display = 'none';
     });
 }
 
-// Show a meme GIF when a non-current day is clicked
+// Show a meme GIF when the wrong day is clicked
 function showMeme(day) {
-    // Hide the bouquet and other sections
     document.getElementById('calendarContainer').style.display = 'none';
-
-    // Show meme content
     document.getElementById('memeGif').style.display = 'block';
     document.getElementById('bouquetContainer').style.display = 'none';
     document.getElementById('messageContainer').style.display = 'none';
     document.getElementById('countdownContainer').style.display = 'none';
-    
-    const memeUrl = `images/meme_day_${day}.gif`;  // Replace with your meme gif paths
+
+    const memeUrl = `images/meme_day_${day}.gif`; // Ensure meme images exist for each day
     document.getElementById('memeGif').src = memeUrl;
 }
 
