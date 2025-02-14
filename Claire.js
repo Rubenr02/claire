@@ -159,7 +159,7 @@ function displayBouquet(day) {
         { src: "images/flower11.jpg", message: "I’m so lucky to have you in my life! 🍀" },
         { src: "images/flower12.jpg", message: "I love waking up knowing you're part of my life! 🌸" },
         { src: "images/flower13.jpg", message: "You're always in my thoughts, and forever in my heart! ❤️" },
-        { src: "images/flower14.jpg", message: "You make every day feel special! 💖" },
+        { src: "images/flower14.jpg", message: "Happy valentines mon chaton! 💖" },
         { src: "images/flower15.jpg", message: "I'm so proud of everything you are! 🌸" },
         { src: "images/flower16.jpg", message: "The world is a better place with you in it! 🌍" },
         { src: "images/flower17.jpg", message: "You're the reason for my happiness today and every day! 😊" },
