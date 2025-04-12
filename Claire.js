@@ -18,56 +18,183 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
+// Function to get the user's local date (handles time zones properly)
+function getLocalDate() {
+    const now = new Date();
+    // Adjust for timezone offset to get the correct local date
+    const timezoneOffset = now.getTimezoneOffset() * 60000;
+    return new Date(now.getTime() - timezoneOffset);
+}
+
+// Function to get the current day of the year (1-365/366)
+function getDayOfYear() {
+    const now = getLocalDate();
+    const start = new Date(now.getFullYear(), 0, 0);
+    const diff = now - start;
+    const oneDay = 1000 * 60 * 60 * 24;
+    return Math.floor(diff / oneDay);
+}
+
+// Function to track which messages have been shown using localStorage
+function getNextMessageIndex(totalMessages) {
+    // Use day of year as key to ensure one message per day
+    const dayOfYear = getDayOfYear();
+    const storageKey = `lastShownMessageIndex_${dayOfYear}`;
+    
+    let lastShownIndex = localStorage.getItem(storageKey);
+    if (lastShownIndex !== null) {
+        // Already shown today, return the same index
+        return parseInt(lastShownIndex);
+    }
+    
+    // Get the next sequential message index
+    let sequentialIndex = localStorage.getItem('sequentialMessageIndex');
+    sequentialIndex = sequentialIndex ? parseInt(sequentialIndex) : 0;
+    
+    // Wrap around if we've reached the end
+    if (sequentialIndex >= totalMessages) {
+        sequentialIndex = 0;
+    }
+    
+    // Store both the daily and sequential indexes
+    localStorage.setItem(storageKey, sequentialIndex.toString());
+    localStorage.setItem('sequentialMessageIndex', (sequentialIndex + 1).toString());
+    
+    return sequentialIndex;
+}
+
 // Function to update the daily message and image
 export function updateContent() {
     const content = [
-        { src: "images/flower8.jpg", message: "New update! Love you pookie ☀️" },
-        { src: "images/flower9.jpg", message: "Every day with you is a blessing! 💕" },
-        { src: "images/flower10.jpg", message: "Sending you all my love today and always! 💖" },
-        { src: "images/flower11.jpg", message: "You're my reason to smile every day! 😁" },
-        { src: "images/flower12.jpg", message: "My heart is yours, today and always! 💕" },
-        { src: "images/flower13.jpg", message: "You're the most beautiful thing that ever happened to me! 💖" },
-        { src: "images/flower14.jpg", message: "Every moment with you is my favorite! 🥰" },
-        { src: "images/flower15.jpg", message: "It's my birthday today! You're the best gift I could wish for!! 🎉" },
-        { src: "images/flower16.jpg", message: "You’re the sweetest person I know! 🍬" },
-        { src: "images/flower17.jpg", message: "Your love makes every day brighter! 🌟" },
-        { src: "images/flower18.jpg", message: "I’m so lucky to have you in my life! 🍀" },
-        { src: "images/flower19.jpg", message: "I love waking up knowing you're part of my life! 🌸" },
-        { src: "images/flower20.jpg", message: "You're always in my thoughts, and forever in my heart! ❤️" },
-        { src: "images/flower21.jpg", message: "You make every day feel special! 💖" },
-        { src: "images/flower22.jpg", message: "I'm so proud of everything you are! 🌸" },
-        { src: "images/flower23.jpg", message: "The world is a better place with you in it! 🌍" },
-        { src: "images/flower24.jpg", message: "You're the reason for my happiness today and every day! 😊" },
-        { src: "images/flower25.jpg", message: "Merry Christmas, mon coeur! 🎄❤️" },
-        { src: "images/flower26.jpg", message: "I can't wait to spend more time with you, mon chaton! 💞" },
-        { src: "images/flower27.jpg", message: "You are my favorite person in the world! 🌏❤️" },
-        { src: "images/flower28.jpg", message: "Every day with you feels like a new adventure! 🌟" },
-        { src: "images/flower29.jpg", message: "I'm thankful for you every single day! 🍀" },
-        { src: "images/flower30.jpg", message: "You're the reason my heart beats with joy! ❤️" },
-        { src: "images/flower31.jpg", message: "Happy New Year, my love! 🎉 Wishing us all the happiness and love in the world in 2025! 🥂" }
+        // Your 200 reasons here (shortened for example)
+        { src: "images/reason1.jpeg", message: "Mon chaton, starting tomorrow, every morning you'll wake up to a new reason why I love you! 200 days, 200 reminders of how special you are to me. Please try to enjoy each fact equally, and not show preference for any over the others" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your kindness" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your musical taste" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your delicious baking" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your amazing smile" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your're a foodie" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're extremely talented" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're special" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make me feel loved" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're super creative" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of the time you devote to me" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of how you always listen to me" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of how cared for you make me feel" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your hilarious humor" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You dance amazingly well" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're a little sunshine" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You check my vibe" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're goofy and silly" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You have the most beautifull beauty marks" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of how you've changed me for the better" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're present" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your amazing handicrafts" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your amazing drawings" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your determination" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your laugh" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your cuddles..." },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your guili guilis" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your sewing skills" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your handmade gifts" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your food indecisiveness" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your patience" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your eyes" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your lovely singing voice" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of how you speak portuguese" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your smooooooth skin" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your leg beauty mark" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your style" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your perfect imperfections" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your crazy ideas" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You have the sexiest body" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your generosity" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your sustainability... yes I actually do" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your love for plants" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your skincare" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your stinky farts" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're very intelligent" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're like no one else" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You scream like crazy in roller coasters" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make me fear losing you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your love for cats" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your kindness" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're mine" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're a really good person" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make me feel comfortable" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your stinky farts" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're also my best friend" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your cute little ears" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make me feel like I belong with you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your perfect body" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You bring me joy" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Food tastes better with you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make me want to write you 200 reasons of why I love you... and let me tell you 200 is A LOT" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make me laugh soooo much" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You can change my day with just one phone call" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make long distance easier" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're everything I could've ever wished for" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You cook reaaaally well" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of the future you see with me" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your kisses..." },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of how gentle you are" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of how brave you are!" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "I admire you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your attention to detail" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You know me" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your excited little jumps" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your movies and series references" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You know me" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your good night calls" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You get a bit grumpy when you're hungry" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're adventurous " },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "I love doing everything with you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You love partying" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your snack choices" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your cute messages" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "My heart beats harder whenever you tell me you love me" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Even showering is better with you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You introduced me into your life" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your bondness to family" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of our shared vision" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your love for pasteis de nata" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of you always stick musics in my head" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "I love doing tiktok trends with you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your home decor taste" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're naturally beautifull" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're not superficial" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You love to travel" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your laptop stickers" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of simply being you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your dessert cravings" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You have the sexiest body" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your focused face" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You love cheeeese" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You believe in us" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your pretty hair" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You smell sooo good" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "It feels like home if I'm with you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're you, and that's more than enough" }
     ];
 
-    const today = new Date();
-    const dayOfYear = today.getDate(); // Get the current day of the year (1-31)
+    // Get the message index for today
+    const messageIndex = getNextMessageIndex(content.length);
 
-    const index = (dayOfYear - 1) % content.length;  // Select content based on the current day of the month
-
-    // Set the picture and message corresponding to the day
-    document.getElementById('bouquetImage').src = content[index].src;
-    document.getElementById('dailyMessage').textContent = content[index].message;
+    // Set the picture and message
+    document.getElementById('bouquetImage').src = content[messageIndex].src;
+    document.getElementById('dailyMessage').textContent = content[messageIndex].message;
 
     // Initialize and hide the bouquet container and meme section
     document.getElementById('bouquetContainer').style.display = "none";
     document.getElementById('messageContainer').style.display = "none";
-    document.getElementById('countdownContainer').style.display = "none";
     document.getElementById('memeGif').style.display = "none";
 
     countdown(); // Start the countdown timer
 }
 
-// Countdown timer to show the countdown until a specific event (e.g., when you are together)
+// Countdown timer to show the countdown until a specific event
 export function countdown() {
-    const countToDate = new Date('March 20, 2025 10:00:00').getTime();
+    // Use UTC time to avoid timezone issues for the target date
+    const countToDate = new Date('March 20, 2025 10:00:00 GMT+0000').getTime();
     const countdownElement = document.getElementById('countdownTimer');
     const bouquetImageElement = document.getElementById('bouquetImage');
     const dailyMessageElement = document.getElementById('dailyMessage');
@@ -90,14 +217,16 @@ export function countdown() {
         }
     }
 
+    // Update immediately and then every second
+    updateCountdown();
     setInterval(updateCountdown, 1000);
 }
 
 export function adventCalendar() {
-    const currentDate = new Date();
+    const currentDate = getLocalDate(); // Use local date
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
-    const daysInMonth = new Date(year, month + 1, 0).getDate(); // Get actual days in the current month
+    const daysInMonth = new Date(year, month + 1, 0).getDate(); // Get actual days in current month
     const calendarGrid = document.getElementById('calendarGrid');
 
     // Clear the grid before adding days
@@ -109,7 +238,7 @@ export function adventCalendar() {
     // Empty spaces before the 1st day of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
         const emptyCell = document.createElement('div');
-        emptyCell.classList.add('empty'); // Class for empty spaces
+        emptyCell.classList.add('empty');
         calendarGrid.appendChild(emptyCell);
     }
 
@@ -117,19 +246,19 @@ export function adventCalendar() {
     for (let i = 1; i <= daysInMonth; i++) {
         const dayDiv = document.createElement('div');
         dayDiv.textContent = i;
-        dayDiv.classList.add('day'); // Add class for styling
+        dayDiv.classList.add('day');
 
         // Highlight the current day
         if (i === currentDate.getDate()) {
             dayDiv.classList.add('selected');
         }
 
-        // Add click event to display bouquet and message or meme
+        // Add click event
         dayDiv.addEventListener('click', () => {
             if (i === currentDate.getDate()) {
-                displayBouquet(i); // Show bouquet and message if it's the current day
+                displayBouquet(i);
             } else {
-                showMeme(i); // Show meme if the wrong day is clicked
+                showMeme(i);
             }
         });
 
@@ -142,40 +271,123 @@ function displayBouquet(day) {
     document.getElementById('calendarContainer').style.display = 'none';
     document.getElementById('bouquetContainer').style.display = 'block';
     document.getElementById('messageContainer').style.display = 'block';
-    document.getElementById('countdownContainer').style.display = 'block';
     document.getElementById('memeGif').style.display = 'none';
 
+    // Use the same content array as updateContent()
     const content = [
-        { src: "images/flower1.jpg", message: "New update! Love you pookie ☀️" },
-        { src: "images/flower2.jpg", message: "Every day with you is a blessing! 💕" },
-        { src: "images/flower3.jpg", message: "Sending you all my love today and always! 💖" },
-        { src: "images/flower4.jpg", message: "You're my reason to smile every day! 😁" },
-        { src: "images/flower5.jpg", message: "My heart is yours, today and always! 💕" },
-        { src: "images/flower6.jpg", message: "You're the most beautiful thing that ever happened to me! 💖" },
-        { src: "images/flower7.jpg", message: "Every moment with you is my favorite! 🥰" },
-        { src: "images/flower8.jpg", message: "It's my birthday today! You're the best gift I could wish for!! 🎉" },
-        { src: "images/flower9.jpg", message: "You’re the sweetest person I know! 🍬" },
-        { src: "images/flower10.jpg", message: "Your love makes every day brighter! 🌟" },
-        { src: "images/flower11.jpg", message: "I’m so lucky to have you in my life! 🍀" },
-        { src: "images/flower12.jpg", message: "I love waking up knowing you're part of my life! 🌸" },
-        { src: "images/flower13.jpg", message: "You're always in my thoughts, and forever in my heart! ❤️" },
-        { src: "images/flower14.jpg", message: "Happy valentines mon chaton! 💖" },
-        { src: "images/flower15.jpg", message: "I'm so proud of everything you are! 🌸" },
-        { src: "images/flower16.jpg", message: "The world is a better place with you in it! 🌍" },
-        { src: "images/flower17.jpg", message: "You're the reason for my happiness today and every day! 😊" },
-        { src: "images/flower18.jpg", message: "Daily reminder that I love you more❤️" },
-        { src: "images/flower19.jpg", message: "I can't wait to spend more time with you, mon chaton! 💞" },
-        { src: "images/flower20.jpg", message: "You are my favorite person in the world! 🌏❤️" },
-        { src: "images/flower21.jpg", message: "Every day with you feels like a new adventure! 🌟" },
-        { src: "images/flower22.jpg", message: "I'm thankful for you every single day! 🍀" },
-        { src: "images/flower23.jpg", message: "You're the reason my heart beats with joy! ❤️" },
-        { src: "images/flower24.jpg", message: "Counting the days to be in your arms again!❤️" }
+        { src: "images/reason1.jpeg", message: "Mon chaton, starting tomorrow, every morning you'll wake up to a new reason why I love you! 200 days, 200 reminders of how special you are to me. Please try to enjoy each fact equally, and not show preference for any over the others" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your kindness" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your musical taste" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your delicious baking" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your amazing smile" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your're a foodie" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're extremely talented" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're special" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make me feel loved" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're super creative" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of the time you devote to me" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of how you always listen to me" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of how cared for you make me feel" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your hilarious humor" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You dance amazingly well" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're a little sunshine" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You check my vibe" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're goofy and silly" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You have the most beautifull beauty marks" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of how you've changed me for the better" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're present" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your amazing handicrafts" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your amazing drawings" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your determination" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your laugh" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your cuddles..." },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your guili guilis" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your sewing skills" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your handmade gifts" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your food indecisiveness" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your patience" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your eyes" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your lovely singing voice" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of how you speak portuguese" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your smooooooth skin" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your leg beauty mark" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your style" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your perfect imperfections" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your crazy ideas" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You have the sexiest body" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your generosity" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your sustainability... yes I actually do" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your love for plants" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your skincare" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your stinky farts" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're very intelligent" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're like no one else" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You scream like crazy in roller coasters" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make me fear losing you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your love for cats" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your kindness" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're mine" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're a really good person" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make me feel comfortable" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your stinky farts" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Your're also my best friend" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your cute little ears" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make me feel like I belong with you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your perfect body" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You bring me joy" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Food tastes better with you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make me want to write you 200 reasons of why I love you... and let me tell you 200 is A LOT" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make me laugh soooo much" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You can change my day with just one phone call" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You make long distance easier" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're everything I could've ever wished for" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You cook reaaaally well" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of the future you see with me" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your kisses..." },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of how gentle you are" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of how brave you are!" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "I admire you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your attention to detail" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You know me" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your excited little jumps" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your movies and series references" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You know me" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your good night calls" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You get a bit grumpy when you're hungry" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're adventurous " },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "I love doing everything with you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You love partying" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your snack choices" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your cute messages" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "My heart beats harder whenever you tell me you love me" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Even showering is better with you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You introduced me into your life" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your bondness to family" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of our shared vision" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your love for pasteis de nata" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of you always stick musics in my head" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "I love doing tiktok trends with you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your home decor taste" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're naturally beautifull" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're not superficial" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You love to travel" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your laptop stickers" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of simply being you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your dessert cravings" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You have the sexiest body" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your focused face" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You love cheeeese" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You believe in us" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "Of your pretty hair" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You smell sooo good" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "It feels like home if I'm with you" },
+        { src: `images/reason${Math.floor(Math.random() * 29) + 1}.jpeg`, message: "You're you, and that's more than enough" }
     ];
-
-    // Ensure we stay within the bounds of available content
-    const dayIndex = Math.min(day - 1, content.length - 1);
-    document.getElementById('bouquetImage').src = content[dayIndex].src;
-    document.getElementById('dailyMessage').textContent = content[dayIndex].message;
+    
+    // Get today's message index to ensure consistency
+    const messageIndex = getNextMessageIndex(content.length);
+    document.getElementById('bouquetImage').src = content[messageIndex].src;
+    document.getElementById('dailyMessage').textContent = content[messageIndex].message;
 
     // Add close button functionality
     const closeButton = document.getElementById('closeButton');
@@ -185,7 +397,6 @@ function displayBouquet(day) {
         document.getElementById('calendarContainer').style.display = 'block';
         document.getElementById('bouquetContainer').style.display = 'none';
         document.getElementById('messageContainer').style.display = 'none';
-        document.getElementById('countdownContainer').style.display = 'none';
         document.getElementById('memeGif').style.display = 'none';
         closeButton.style.display = 'none';
     });
@@ -197,13 +408,12 @@ function showMeme(day) {
     document.getElementById('memeGif').style.display = 'block';
     document.getElementById('bouquetContainer').style.display = 'none';
     document.getElementById('messageContainer').style.display = 'none';
-    document.getElementById('countdownContainer').style.display = 'none';
 
-    const memeUrl = `images/meme_day_${day}.gif`; // Ensure meme images exist for each day
+    const memeUrl = `images/meme_day_${day}.gif`;
     document.getElementById('memeGif').src = memeUrl;
 }
 
-// Emoji reaction (existing logic for reactions)
+// Emoji reaction function
 export function react(emoji) {
     const numberOfEmojis = 10;
     for (let i = 0; i < numberOfEmojis; i++) {
@@ -212,9 +422,6 @@ export function react(emoji) {
     storeEmojiReaction(emoji);
 }
 
-
-
-// Falling emoji creation function
 function createFallingEmoji(emoji) {
     const emojiElement = document.createElement('div');
     emojiElement.classList.add('falling-emoji');
@@ -229,7 +436,6 @@ function createFallingEmoji(emoji) {
     });
 }
 
-// Store emoji reaction in Firestore
 async function storeEmojiReaction(emoji) {
     try {
         await addDoc(collection(db, 'emojiReactions'), {
@@ -242,24 +448,15 @@ async function storeEmojiReaction(emoji) {
     }
 }
 
-
-
-// Select all egg elements
+// Egg click handlers
 const eggs = document.querySelectorAll('.egg');
-
-// Loop through each egg and add event listener
-eggs.forEach((egg, index) => {
-    // Select the emoji face inside the yellow yolk
+eggs.forEach((egg) => {
     const emoji = egg.querySelector('.emoji-face');
-    
-    // Add a click event to toggle the emoji visibility
     egg.addEventListener('click', () => {
-        emoji.classList.toggle('show'); // Toggle emoji visibility on click
+        emoji.classList.toggle('show');
     });
 });
 
-
-// Call functions to initialize content and calendar
+// Initialize the application
 adventCalendar();
 updateContent();
-
