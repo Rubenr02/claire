@@ -28,21 +28,20 @@ meta[name="viewport"] {
     content: "width=device-width, initial-scale=1.0"; /* Enable responsive design */
 }
 
-/* Container Styles */
 .container {
     position: relative;
     text-align: center;
     background-color: #ffffff;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Larger shadow for floating effect */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 500px;
-    max-height: 120vh;
-    overflow: hidden; /* Ensure the eggs stay within the container */
+    max-width: 800px; /* <-- INCREASE this from 500px */
+    max-height: none; /* <-- REMOVE height limit */
+    overflow: visible; /* <-- Let images expand normally */
     margin: 20px;
     transition: all 0.4s ease-in-out;
-    background: linear-gradient(135deg, #fff0f5, #ffefd5); /* Soft pastel pink and yellowish gradient */
+    background: linear-gradient(135deg, #fff0f5, #ffefd5);
 }
 
 /* Initially hide the emoji face */
@@ -585,8 +584,11 @@ h3 {
     }
 
     .bouquet img {
-        max-height: 35vh;
+        max-height: 60vh;
+        width: auto;
+        height: auto;
     }
+    
 
     .countdown h2 {
         font-size: 1.2em;
