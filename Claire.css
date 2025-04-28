@@ -697,3 +697,69 @@ h3 {
     animation: rain forwards;
     opacity: 1;
 }
+
+@media (max-width: 390px) {
+    body {
+        padding: 0;
+        margin: 0;
+        height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 360px;
+        margin: 20px auto;
+        padding: 25px 15px;
+        min-height: 95vh; /* <-- make the container taller */
+        border-radius: 20px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+    }
+
+    .bouquet img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        max-height: 70vh; /* <-- allow taller images */
+        object-fit: contain;
+        border-radius: 15px;
+    }
+
+    /* Countdown Timer and Calendar adjustments */
+    .countdown h2 {
+        font-size: 1.2em;
+    }
+
+    #countdownTimer {
+        font-size: 1.5em;
+    }
+
+    /* Calendar Grid Tweaks */
+    #calendarGrid {
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 8px;
+    }
+
+    #calendarGrid div {
+        width: 42px;
+        height: 42px;
+        font-size: 1em;
+    }
+
+    /* Egg size adjustments for better visibility */
+    .egg {
+        width: 65px !important;
+        height: 65px !important;
+    }
+
+    .yellow-yolk {
+        width: 22px !important;
+        height: 22px !important;
+    }
+}
+
